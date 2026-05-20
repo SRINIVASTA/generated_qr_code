@@ -1,13 +1,13 @@
 import os
 import qrcode
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 import streamlit as st
 import io
 
-st.set_page_config(page_title="QR Code Generator", layout="centered")
+st.set_page_config(page_title="Fintech QR Code Generator", layout="centered")
 
-st.title("📊 QR Generator")
-st.write("Generate high-resolution, branded QR codes.")
+st.title("📊 Professional Portfolio QR Generator")
+st.write("Generate high-resolution, branded QR codes for your Saturday meetup at GITAM.")
 
 # 1. Streamlit Interactive Inputs with Guide Instructions Placed Below
 target_url = st.text_input("👉 ENTER URL:")
@@ -33,7 +33,7 @@ for path in possible_paths:
         break
 
 # 3. Action button validation sequence
-if st.button("Generate QR Code"):
+if st.button("Generate QR Code") or target_url:
     if target_url.strip():
         # Configure high-resolution QR matrix
         qr = qrcode.QRCode(
@@ -50,7 +50,7 @@ if st.button("Generate QR Code"):
         qr_width, qr_height = qr_img.size
 
         # 4. Set up dynamic white canvas buffer space for clear text spacing
-        extra_bottom_space = 100
+        extra_bottom_space = 110
         new_width = qr_width
         new_height = qr_height + extra_bottom_space
 
@@ -72,24 +72,29 @@ if st.button("Generate QR Code"):
             x_position = (new_width - text_w) // 2
             draw.text((x_position, y_position), text_to_print, fill=text_color, font=font_style)
 
-        # 6. Print typography fields on bottom white canvas (Fallback handling if input is empty)
+        # 6. Print typography fields on bottom white canvas
         print_name = display_name.strip() if display_name.strip() else "Appala Srinivas Tanakala"
         print_title = display_title.strip() if display_title.strip() else "Data Scientist"
 
         draw_centered_text(print_name, qr_height + 15, name_font, text_color="black")
-        draw_centered_text(print_title, qr_height + 52, title_font, text_color="#555555")
+        draw_centered_text(print_title, qr_height + 55, title_font, text_color="#555555")
 
-        # 7. Display the generated image inside your Streamlit Web App page
-        st.image(final_img, caption="Preview of your generated card", use_container_width=False, width=400)
+        # 7. Add the Frame Border Layout
+        # This adds an outer 3-pixel dark gray border and nested padding to keep it exceptionally neat
+        border_color = "#333333" 
+        final_img = ImageOps.expand(final_img, border=3, fill=border_color)
 
-        # 8. Convert the PIL image array into downloadable bytes stream
+        # 8. Display the framed image inside your Streamlit Web App page
+        st.image(final_img, caption="Preview of your framed QR badge", use_container_width=False, width=400)
+
+        # 9. Convert the framed PIL image array into downloadable bytes stream
         img_buffer = io.BytesIO()
         final_img.save(img_buffer, format="PNG")
         byte_data = img_buffer.getvalue()
 
-        # 9. Download button forcing filename explicitly to generated_qr
+        # 10. Download button forcing filename explicitly to generated_qr
         st.download_button(
-            label="⬇️ Download Production-Ready QR Code",
+            label="⬇️ Download Framed QR Code",
             data=byte_data,
             file_name="generated_qr.png",
             mime="image/png"

@@ -4,10 +4,10 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 import streamlit as st
 import io
 
-st.set_page_config(page_title="Fintech QR Code Generator", layout="centered")
+st.set_page_config(page_title="QR Code Generator", layout="centered")
 
-st.title("📊 Professional Portfolio QR Generator")
-st.write("Generate high-resolution, branded QR codes for your Saturday meetup at GITAM.")
+st.title("📊 QR Generator")
+st.write("Generate high-resolution, branded QR codes.")
 
 # 1. Streamlit Interactive Inputs with Guide Instructions Placed Below
 target_url = st.text_input("👉 ENTER URL:")

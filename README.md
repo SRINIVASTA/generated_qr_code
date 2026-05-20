@@ -6,7 +6,6 @@ Designed specifically for enterprise networking, startup showcases, and tech con
 
 ## 🚀 Live Application
 👉 **[Launch the Live App on Streamlit Cloud]([https://generatedqrcode-o4c9u7iprbc9bzkqrxqu4j.streamlit.app/])**  
-*(Make sure to replace YOUR_REPO_NAME with your exact repository slug)*
 
 ---
 
@@ -37,7 +36,7 @@ If you want to run this application locally on your computer workstation:
 
 1. **Clone the repository to your machine:**
    ```bash
-   git clone https://github.com
+   git clone https://github.com/Srinivasta
    cd YOUR_REPO_NAME
    ```
 

@@ -1,4 +1,4 @@
-# 📊 Professional Portfolio QR Generator
+# 📊 QR Generator
 
 An interactive, AI-augmented web application built with **Streamlit** and **Pillow (PIL)** that generates high-resolution, professionally framed, and labeled business QR codes on the fly. 
 

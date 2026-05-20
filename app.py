@@ -1,36 +1,45 @@
 import os
-import urllib.request
 import qrcode
 from PIL import Image, ImageDraw, ImageFont
 import streamlit as st
 import io
 
-st.set_page_config(page_title="Fintech QR Code Generator", layout="centered")
+st.set_page_config(page_title="QR Code Generator", layout="centered")
 
-st.title("📊 Professional Portfolio QR Generator")
-st.write("Generate high-resolution, branded QR codes for your Saturday meetup at GITAM.")
+st.title("📊 QR Generator")
+st.write("Generate high-resolution, branded QR codes.")
 
-# 1. Streamlit Interactive Inputs
-target_url = st.text_input("👉 ENTER URL:", value="https://github.com")
-display_name = st.text_input("👤 ENTER YOUR NAME:", value="Appala Srinivas Tanakala")
-display_title = st.text_input("💼 ENTER YOUR TITLE:", value="Data Scientist & AI / Fintech Leader")
+# 1. Streamlit Interactive Inputs with Guide Instructions Placed Below
+target_url = st.text_input("👉 ENTER URL:")
+st.caption("💡 *Example to enter: https://github.com or your live deployed app link*")
 
-# 2. Dynamic Font Fix: Download a high-quality TrueType font for crystal clear text
-font_path = "LiberationSans-Bold.ttf"
-if not os.path.exists(font_path):
-    url = "https://github.com"
-    try:
-        urllib.request.urlretrieve(url, font_path)
-    except:
-        font_path = None  # Fallback to default if download fails
+display_name = st.text_input("👤 ENTER YOUR NAME:")
+st.caption("💡 *Example to enter: Appala Srinivas Tanakala*")
 
-if st.button("Generate QR Code") or target_url:
+display_title = st.text_input("💼 ENTER YOUR TITLE:")
+st.caption("💡 *Example to enter: Data Scientist & AI / Fintech Leader*")
+
+# 2. Linux System Font Routing Fix
+font_path = None
+possible_paths = [
+    "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+    "/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf"
+]
+
+for path in possible_paths:
+    if os.path.exists(path):
+        font_path = path
+        break
+
+# 3. Action button validation sequence
+if st.button("Generate QR Code"):
     if target_url.strip():
-        # 3. Configure high-resolution QR matrix
+        # Configure high-resolution QR matrix
         qr = qrcode.QRCode(
-            version=4,  # High grid density for reliable scanning
+            version=4,  
             error_correction=qrcode.constants.ERROR_CORRECT_M, 
-            box_size=14,  # Scaled up for modern crisp smartphone displays
+            box_size=14,  
             border=4,
         )
         qr.add_data(target_url.strip())
@@ -49,7 +58,7 @@ if st.button("Generate QR Code") or target_url:
         final_img.paste(qr_img, (0, 0))
         draw = ImageDraw.Draw(final_img)
 
-        # 5. Initialize the explicit sharp fonts and crisp sizes
+        # 5. Initialize the explicit sharp fonts with clean system fallback structures
         if font_path:
             name_font = ImageFont.truetype(font_path, 26)  # Bold and readable
             title_font = ImageFont.truetype(font_path, 18)  # Clean secondary text
@@ -63,14 +72,17 @@ if st.button("Generate QR Code") or target_url:
             x_position = (new_width - text_w) // 2
             draw.text((x_position, y_position), text_to_print, fill=text_color, font=font_style)
 
-        # 6. Print typography fields on bottom white canvas
-        draw_centered_text(display_name.strip(), qr_height + 15, name_font, text_color="black")
-        draw_centered_text(display_title.strip(), qr_height + 52, title_font, text_color="#555555")
+        # 6. Print typography fields on bottom white canvas (Fallback handling if input is empty)
+        print_name = display_name.strip() if display_name.strip() else "Appala Srinivas Tanakala"
+        print_title = display_title.strip() if display_title.strip() else "Data Scientist"
+
+        draw_centered_text(print_name, qr_height + 15, name_font, text_color="black")
+        draw_centered_text(print_title, qr_height + 52, title_font, text_color="#555555")
 
         # 7. Display the generated image inside your Streamlit Web App page
         st.image(final_img, caption="Preview of your generated card", use_container_width=False, width=400)
 
-        # 8. Convert the PIL image image array into downloadable bytes stream
+        # 8. Convert the PIL image array into downloadable bytes stream
         img_buffer = io.BytesIO()
         final_img.save(img_buffer, format="PNG")
         byte_data = img_buffer.getvalue()

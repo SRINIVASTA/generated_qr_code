@@ -56,4 +56,4 @@ If you want to run this application locally on your computer workstation:
 
 * **Developer:** Appala Srinivas Tanakala
 * **Role:** Data Scientist & AI / FinTech Exploration Leader
-* **GitHub Profile:** [://github.com](https://://github.com)
+* **GitHub Profile:** [://github.com](https://://github.com/srinivasta)

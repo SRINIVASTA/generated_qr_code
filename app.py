@@ -6,10 +6,31 @@ import io
 
 st.set_page_config(page_title="QR Code Generator", layout="centered")
 
+# 1. Custom CSS Injector to create the Application Border Frame Layout
+st.markdown("""
+    <style>
+    /* Wraps the entire content block inside a structured business card frame */
+    .block-container {
+        border: 2px solid #E0E4EC;
+        border-radius: 12px;
+        padding: 40px !important;
+        background-color: #FFFFFF;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03);
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    /* Adds a clean layout border block styling around the main container */
+    .main .block-container {
+        max-width: 700px !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# 2. Application Header
 st.title("📊 QR Generator")
 st.write("Generate high-resolution, branded QR codes.")
 
-# 1. Streamlit Interactive Inputs with Guide Instructions Placed Below
+# 3. Streamlit Interactive Inputs with Guide Instructions Placed Below
 target_url = st.text_input("👉 ENTER URL:")
 st.caption("💡 *Example to enter: https://github.com or your live deployed app link*")
 
@@ -19,7 +40,7 @@ st.caption("💡 *Example to enter: Appala Srinivas Tanakala*")
 display_title = st.text_input("💼 ENTER YOUR TITLE:")
 st.caption("💡 *Example to enter: Data Scientist & AI / Fintech Leader*")
 
-# 2. Linux System Font Routing Fix
+# 4. Linux System Font Routing Fix
 font_path = None
 possible_paths = [
     "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
@@ -32,7 +53,7 @@ for path in possible_paths:
         font_path = path
         break
 
-# 3. Action button validation sequence
+# 5. Action button validation sequence
 if st.button("Generate QR Code") or target_url:
     if target_url.strip():
         # Configure high-resolution QR matrix
@@ -49,7 +70,7 @@ if st.button("Generate QR Code") or target_url:
         qr_img = qr.make_image(fill_color="black", back_color="white").convert('RGB')
         qr_width, qr_height = qr_img.size
 
-        # 4. Set up dynamic white canvas buffer space for clear text spacing
+        # Set up dynamic white canvas buffer space for clear text spacing
         extra_bottom_space = 110
         new_width = qr_width
         new_height = qr_height + extra_bottom_space
@@ -58,7 +79,7 @@ if st.button("Generate QR Code") or target_url:
         final_img.paste(qr_img, (0, 0))
         draw = ImageDraw.Draw(final_img)
 
-        # 5. Initialize the explicit sharp fonts with clean system fallback structures
+        # Initialize the explicit sharp fonts with clean system fallback structures
         if font_path:
             name_font = ImageFont.truetype(font_path, 26)  # Bold and readable
             title_font = ImageFont.truetype(font_path, 18)  # Clean secondary text
@@ -72,27 +93,26 @@ if st.button("Generate QR Code") or target_url:
             x_position = (new_width - text_w) // 2
             draw.text((x_position, y_position), text_to_print, fill=text_color, font=font_style)
 
-        # 6. Print typography fields on bottom white canvas
+        # Print typography fields on bottom white canvas
         print_name = display_name.strip() if display_name.strip() else "Appala Srinivas Tanakala"
         print_title = display_title.strip() if display_title.strip() else "Data Scientist"
 
         draw_centered_text(print_name, qr_height + 15, name_font, text_color="black")
         draw_centered_text(print_title, qr_height + 55, title_font, text_color="#555555")
 
-        # 7. Add the Frame Border Layout
-        # This adds an outer 3-pixel dark gray border and nested padding to keep it exceptionally neat
-        border_color = "#333333" 
-        final_img = ImageOps.expand(final_img, border=3, fill=border_color)
+        # Add an inner frame border around the image asset file itself
+        final_img = ImageOps.expand(final_img, border=3, fill="#333333")
 
-        # 8. Display the framed image inside your Streamlit Web App page
-        st.image(final_img, caption="Preview of your framed QR badge", use_container_width=False, width=400)
+        # 6. Display the image inside your new app frame layout
+        st.write("---")
+        st.image(final_img, caption="Preview of your framed QR badge", use_container_width=False, width=350)
 
-        # 9. Convert the framed PIL image array into downloadable bytes stream
+        # Convert the framed PIL image array into downloadable bytes stream
         img_buffer = io.BytesIO()
         final_img.save(img_buffer, format="PNG")
         byte_data = img_buffer.getvalue()
 
-        # 10. Download button forcing filename explicitly to generated_qr
+        # Download button forcing filename explicitly to generated_qr
         st.download_button(
             label="⬇️ Download Framed QR Code",
             data=byte_data,

@@ -5,7 +5,7 @@ An interactive, AI-augmented web application built with **Streamlit** and **Pill
 Designed specifically for enterprise networking, startup showcases, and tech conventions.
 
 ## 🚀 Live Application
-👉 **[Launch the Live App on Streamlit Cloud]([https://streamlit.io](https://generatedqrcode-o4c9u7iprbc9bzkqrxqu4j.streamlit.app/))**  
+👉 **[Launch the Live App on Streamlit Cloud]([https://generatedqrcode-o4c9u7iprbc9bzkqrxqu4j.streamlit.app/])**  
 *(Make sure to replace YOUR_REPO_NAME with your exact repository slug)*
 
 ---
